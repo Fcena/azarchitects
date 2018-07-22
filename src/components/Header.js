@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const StyledHeader = styled.div`
+  top: 0;
+  width: 100vw;
+  height: 3rem;
+  box-sizing: border-box;
   background-color: orange;
-  padding: 2vh;
+  display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
+  position: fixed;
 `;
 
 class Header extends Component {
