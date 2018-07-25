@@ -5,9 +5,8 @@ const StyledContent = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.color || 'grey'};
-  /* min-height: 300px; This way it works*/
-  /* height: 100%; */
+  text-align: justify;
+  background-color: #fafafa;
   padding: 2em;
 `;
 
