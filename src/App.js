@@ -16,8 +16,8 @@ const Main = styled.main`
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: tomato;
-  margin-top: 3rem;
+  width: 80vw;
+  margin: 3.5rem auto 0 auto;
   overflow-y: scroll;
   @media (min-width: 768px) {
     flex-direction: row;
@@ -30,8 +30,7 @@ class App extends Component {
       <StyledContainer>
         <Header />
         <Main>
-          <Content color={'yellow'} />
-          <Content color={'blue'} />
+          <Content />
         </Main>
         <Footer />
       </StyledContainer>

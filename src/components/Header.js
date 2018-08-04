@@ -1,68 +1,169 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import AZLogo from './azLogo';
+import FontAwesome from 'react-fontawesome';
 
-const StyledHeader = styled.div`
+const Navbar = styled.nav`
   top: 0;
   width: 100vw;
-  height: 3rem;
+  height: ${props => (props.isHamburgerMenuVisible ? 'auto' : '3.5rem')};
+  padding: 0 10vw;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  box-shadow: 0 2px 2px -2px rgba(86, 90, 155, 0.54);
+  color: #020065;
+  background-color: rgba(255, 255, 255, 0.98);
   position: fixed;
   transition: transform 300ms ease-in-out;
-  transform: translateY(${props => (props.shouldHide ? '-3rem' : 0)});
+  transform: translateY(${props => (props.isHeaderHidden ? '-20rem' : 0)});
+  flex-direction: ${props => (props.isHamburgerMenuVisible ? 'column' : 'row')};
+  display: flex;
+  @media (min-width: 768px) {
+    align-items: center;
+    height: 3.5rem;
+  }
+`;
+
+const Brand = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin: 0;
+`;
+
+const Hamburger = styled.div`
+  display: flex;
+  align-items: center;
+  align-self: 'flex-end';
+  position: 'absolute';
+  margin-top: '0.8rem';
+  margin-left: auto;
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const StyledNavItemContainer = styled.ul`
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  list-style: none;
+  display: ${props => (props.isHamburgerMenuVisible ? 'flex' : 'none')};
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1.5rem 0 2rem 0;
+  li {
+    cursor: pointer;
+    margin-left: 0;
+    padding: 0.5rem 0 0 0;
+    border-bottom: 1px solid #333;
+    text-align: left;
+  }
+  li:first-child {
+    padding: 0;
+  }
+  li:hover {
+    color: rgba(85, 172, 238, 1);
+  }
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+    /* padding: 0; */
+    li {
+      padding: 0;
+      margin-left: 1rem;
+      border-bottom: none;
+      text-align: center;
+    }
+    li:first-child {
+      margin: 0;
+    }
+  }
 `;
 
 class Header extends Component {
   constructor() {
     super();
     this.state = {
-      shouldHide: false,
+      isHeaderHidden: false,
+      isHamburgerMenuVisible: false,
     };
     this.myRef = React.createRef();
     this.prevScrollPosition = 0;
     this.onScroll = this.onScroll.bind(this);
+    this.onHamburgerClick = this.onHamburgerClick.bind(this);
   }
 
   onScroll() {
     const currentScrollYOffset = window.pageYOffset;
     this.setState({
-      shouldHide:
+      isHeaderHidden:
         currentScrollYOffset > this.myRef.clientHeight &&
         currentScrollYOffset > this.prevScrollPosition,
     });
     this.prevScrollPosition = currentScrollYOffset;
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.onScroll);
+  onHamburgerClick() {
+    this.setState({
+      // isHeaderHidden: false,
+      isHamburgerMenuVisible: !this.state.isHamburgerMenuVisible,
+    });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.shouldHide !== nextState.shouldHide;
+    return (
+      this.state.isHeaderHidden !== nextState.isHeaderHidden ||
+      this.state.isHamburgerMenuVisible !== nextState.isHamburgerMenuVisible
+    );
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll');
   }
 
-  componentWillUpdate() {
-    console.log('COMPONENT WILL UPDATE');
-  }
-
   render() {
     return (
-      <StyledHeader
+      <Navbar
         innerRef={node => {
           this.myRef = node;
         }}
-        shouldHide={this.state.shouldHide}
+        isHeaderHidden={this.state.isHeaderHidden}
+        isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
+        isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
       >
-        <div>Header</div>
-      </StyledHeader>
+        <Brand isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}>
+          <AZLogo height="3.5rem" />
+          <Hamburger
+            onClick={this.onHamburgerClick}
+            isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
+          >
+            <FontAwesome name="bars" size="2x" />
+          </Hamburger>
+        </Brand>
+        <StyledNavItemContainer
+          role="navigation"
+          isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
+        >
+          <li>
+            <a>Practice</a>
+          </li>
+          <li>
+            <a>Projects</a>
+          </li>
+          <li>
+            <a>Contact</a>
+          </li>
+          <li>
+            <a>Book a Meeting</a>
+          </li>
+        </StyledNavItemContainer>
+      </Navbar>
     );
   }
 }
