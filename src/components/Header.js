@@ -9,15 +9,16 @@ const Navbar = styled.nav`
   height: ${props => (props.isHamburgerMenuVisible ? 'auto' : '3.5rem')};
   padding: 0 10vw;
   box-sizing: border-box;
-  box-shadow: 0 2px 2px -2px rgba(86, 90, 155, 0.54);
+  box-shadow: 1px 0 10px 0 #4a4a4a;
   color: #020065;
   background-color: rgba(255, 255, 255, 0.98);
   position: fixed;
   transition: transform 300ms ease-in-out;
   transform: translateY(${props => (props.isHeaderHidden ? '-20rem' : 0)});
-  flex-direction: ${props => (props.isHamburgerMenuVisible ? 'column' : 'row')};
+  flex-direction: column;
   display: flex;
   @media (min-width: 768px) {
+    flex-direction: row;
     align-items: center;
     height: 3.5rem;
   }
@@ -26,8 +27,10 @@ const Navbar = styled.nav`
 const Brand = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
   justify-content: flex-start;
   margin: 0;
+  height: 3.5rem;
 `;
 
 const Hamburger = styled.div`
@@ -37,6 +40,7 @@ const Hamburger = styled.div`
   position: 'absolute';
   margin-top: '0.8rem';
   margin-left: auto;
+  cursor: pointer;
   @media (min-width: 768px) {
     display: none;
   }
@@ -51,12 +55,15 @@ const StyledNavItemContainer = styled.ul`
   flex-direction: column;
   justify-content: space-around;
   padding: 1.5rem 0 2rem 0;
+  font-weight: 400;
+  font-size: 14px;
   li {
     cursor: pointer;
     margin-left: 0;
     padding: 0.5rem 0 0 0;
     border-bottom: 1px solid #333;
     text-align: left;
+    text-transform: uppercase;
   }
   li:first-child {
     padding: 0;
@@ -69,7 +76,7 @@ const StyledNavItemContainer = styled.ul`
     flex-direction: row;
     align-items: center;
     margin-left: auto;
-    /* padding: 0; */
+    padding: 0;
     li {
       padding: 0;
       margin-left: 1rem;
@@ -107,7 +114,6 @@ class Header extends Component {
 
   onHamburgerClick() {
     this.setState({
-      // isHeaderHidden: false,
       isHamburgerMenuVisible: !this.state.isHamburgerMenuVisible,
     });
   }
@@ -135,15 +141,14 @@ class Header extends Component {
         }}
         isHeaderHidden={this.state.isHeaderHidden}
         isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
-        isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
       >
         <Brand isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}>
-          <AZLogo height="3.5rem" />
+          <AZLogo height="3rem" />
           <Hamburger
             onClick={this.onHamburgerClick}
             isHamburgerMenuVisible={this.state.isHamburgerMenuVisible}
           >
-            <FontAwesome name="bars" size="2x" />
+            <FontAwesome name="bars" />
           </Hamburger>
         </Brand>
         <StyledNavItemContainer
